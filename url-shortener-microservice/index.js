@@ -104,17 +104,12 @@ app.post("/api/shorturl", async function (req, res) {
 
   console.log(JSON.stringify(req.body));
 
-  if (!validUrl.isWebUri(url)) {
-    res.status(401).json({
-      error: "invalid url",
-    });
-  } else {
-    await insertShortnerData(url, shortURL);
-    res.json({
-      original_url: url,
-      short_url: shortURL,
-    });
-  }
+  await insertShortnerData(url, shortURL);
+
+  res.json({
+    original_url: url,
+    short_url: shortURL,
+  });
 });
 
 app.get("/api/shorturl/:short_url?", async function (req, res) {
