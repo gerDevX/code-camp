@@ -99,7 +99,7 @@ app.use(express.json());
 
 // Endpoints
 app.post("/api/shorturl", async function (req, res) {
-  const url = req.body.url_input;
+  const url = req.body.url;
   const shortURL = shortId.generate();
 
   console.log(JSON.stringify(req.body));
