@@ -1,0 +1,30 @@
+{
+  "name": "url-shortener-microservice",
+  "version": "0.0.1",
+  "description": "Backend Challenge",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.0",
+    "express": "^4.12.4",
+    "shortid": "^2.2.16",
+    "sqlite": "^5.0.1",
+    "sqlite3": "^5.1.6",
+    "valid-url": "^1.0.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/freeCodeCamp/boilerplate-project-urlshortener.git"
+  },
+  "homepage": "https://github.com/freeCodeCamp/boilerplate-project-urlshortener#readme",
+  "author": "GerSC",
+  "keywords": [
+    "node",
+    "express",
+    "freeCodeCamp"
+  ],
+  "license": "MIT"
+}
