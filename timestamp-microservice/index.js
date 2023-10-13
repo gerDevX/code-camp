@@ -15,7 +15,7 @@ app.get("/", function (req, res) {
 });
 
 // Endpoints
-app.get("/api/timestamp/:date?", function (req, res) {
+app.get("/api/:date?", function (req, res) {
   const dateStr = req.params.date;
   let date = null;
 
