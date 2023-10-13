@@ -1,0 +1,26 @@
+{
+  "name": "request-header-parser-microservice",
+  "version": "0.0.1",
+  "description": "Backend Challenge",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.12.4",
+    "cors": "^2.8.0",
+    "request-ip": "^2.1.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/freeCodeCamp/boilerplate-project-headerparser.git"
+  },
+  "homepage": "https://github.com/freeCodeCamp/boilerplate-project-headerparser#readme",
+  "author": "GerSC",
+  "keywords": [
+    "node",
+    "express",
+    "freeCodeCamp"
+  ],
+  "license": "MIT"
+}
