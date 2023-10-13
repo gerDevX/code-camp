@@ -119,17 +119,17 @@ app.post("/api/shorturl", async function (req, res) {
 
 app.get("/api/shorturl/:short_url?", async function (req, res) {
   try {
-    if (!validUrl.isWebUri(req.params.short_url)) {
-      res.status(401).json({
-        error: "invalid url",
-      });
-    } else {
-      const resultURL = await selectShortnerDataByCode(req.params.short_url);
-      if (resultURL) {
-        return res.redirect(resultURL.originalUrl);
+    const resultURL = await selectShortnerDataByCode(req.params.short_url);
+    if (resultURL) {
+      if (!validUrl.isWebUri(resultURL.originalUrl)) {
+        res.status(401).json({
+          error: "invalid url",
+        });
       } else {
-        return res.status(404).json("No URL found");
+        return res.redirect(resultURL.originalUrl);
       }
+    } else {
+      return res.status(404).json("No URL found");
     }
   } catch (err) {
     console.log(err);
