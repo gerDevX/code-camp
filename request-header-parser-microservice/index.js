@@ -19,12 +19,12 @@ app.use(requestIp.mw());
 
 // Endpoints
 app.get("/api/whoami", function (req, res) {
-  const ipadress = req.clientIp;
+  const ipaddress = req.clientIp;
   const language = req.acceptsLanguages();
   const software = req.get("User-Agent");
 
   res.json({
-    ipadress: ipadress,
+    ipaddress: ipaddress,
     language: language[0],
     software: software,
   });
