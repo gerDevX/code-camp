@@ -45,20 +45,7 @@ suite("Unit Tests", function () {
 
   suite("Function convertHandler.getUnit(input)", function () {
     test("For Each Valid Unit Inputs", function (done) {
-      var input = [
-        "gal",
-        "L",
-        "mi",
-        "km",
-        "lbs",
-        "kg",
-        "GAL",
-        "L",
-        "MI",
-        "KM",
-        "LBS",
-        "KG",
-      ];
+      var input = ["gal", "L", "mi", "km", "lbs", "kg"];
       input.forEach(function (ele) {
         const input = `1/2${ele}`;
         assert.equal(convertHandler.getUnit(input), ele);

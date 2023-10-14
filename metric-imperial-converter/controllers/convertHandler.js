@@ -29,7 +29,7 @@ function ConvertHandler() {
         String(unit[0])?.toLowerCase()
       )
     ) {
-      result = unit[0];
+      result = String(unit[0])?.toLowerCase();
       if (result === "l") result = "L";
     } else {
       result = "invalid unit";
