@@ -40,16 +40,20 @@ const initializeDB = () => {
 const getUsers = () => {
   return new Promise((resolve, reject) => {
     const db = connectDB();
-    return db.all("SELECT userId, username FROM users", [], (err, row) => {
-      if (err) {
-        console.log("DB Error: Query failed: ", err.message);
-        return reject(err.message);
-      }
-      console.log("Users has found into the users table.");
-      db.close();
+    return db.all(
+      "SELECT userId AS _id, username FROM users",
+      [],
+      (err, row) => {
+        if (err) {
+          console.log("DB Error: Query failed: ", err.message);
+          return reject(err.message);
+        }
+        console.log("Users has found into the users table.");
+        db.close();
 
-      return resolve(row);
-    });
+        return resolve(row);
+      }
+    );
   });
 };
 
