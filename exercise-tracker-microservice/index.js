@@ -26,7 +26,7 @@ const initializeDB = () => {
     "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, userId TEXT, username TEXT)"
   );
   db.run(
-    "CREATE TABLE IF NOT EXISTS exercises(exec_id INTEGER PRIMARY KEY, userId TEXT, description TEXT, duration INTEGER, date TEXT)"
+    "CREATE TABLE IF NOT EXISTS exercises(exec_id INTEGER PRIMARY KEY, userId TEXT, description TEXT, duration INTEGER, date INTEGER)"
   );
   db.close();
 
@@ -139,37 +139,49 @@ const insertNewExercise = (userId, exerciseData) => {
  * @param {*} userId
  * @returns
  */
-const getLogs = (userId) => {
+const getLogs = (userId, from, to, limit) => {
   return new Promise((resolve, reject) => {
     const db = connectDB();
-    return db.all(
-      "SELECT description, duration, date FROM exercises WHERE userId = ?",
-      [userId],
-      (err, rows) => {
-        if (err) {
-          console.log("DB Error: Query failed: ", err.message);
-          return reject(err.message);
-        }
-        console.log("Exercises has found into the exercises table.");
-        db.close();
 
-        (async () => {
-          const users = await getUsers(true);
-          const userData = users.find((user) => user.userId === userId);
+    let query =
+      "SELECT description, duration, date FROM exercises WHERE userId = ?";
+    const params = [userId];
 
-          return resolve({
-            username: userData.username,
-            count: rows.length,
-            _id: userId,
-            log: rows.map((row) => ({
-              description: row.description,
-              duration: Number(row.duration),
-              date: new Date(Number(row.date)).toDateString(),
-            })),
-          });
-        })();
+    if (from && to) {
+      query += " AND date BETWEEN ? AND ?";
+      params.push(new Date(from));
+      params.push(new Date(to));
+    }
+
+    if (limit && limit > 0) {
+      query += " LIMIT ?";
+      params.push(limit);
+    }
+
+    return db.all(query, params, (err, rows) => {
+      if (err) {
+        console.log("DB Error: Query failed: ", err.message);
+        return reject(err.message);
       }
-    );
+      console.log("Exercises has found into the exercises table.");
+      db.close();
+
+      (async () => {
+        const users = await getUsers(true);
+        const userData = users.find((user) => user.userId === userId);
+
+        return resolve({
+          username: userData.username,
+          count: rows.length,
+          _id: userId,
+          log: rows.map((row) => ({
+            description: row.description,
+            duration: Number(row.duration),
+            date: new Date(Number(row.date)).toDateString(),
+          })),
+        });
+      })();
+    });
   });
 };
 
@@ -234,7 +246,13 @@ app.post("/api/users/:id?/exercises", async function (req, res) {
 
 app.get("/api/users/:id?/logs", async function (req, res) {
   try {
-    const resultLog = await getLogs(req.params.id);
+    const limit = Number(req.query.limit);
+    const from = req.query.from;
+    const to = req.query.to;
+
+    console.log(req.params.id, limit, from, to);
+
+    const resultLog = await getLogs(req.params.id, from, to, limit);
     console.log(resultLog);
 
     if (resultLog && resultLog?.username) {
