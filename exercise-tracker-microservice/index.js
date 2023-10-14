@@ -37,23 +37,28 @@ const initializeDB = () => {
  * Get list of users
  * @returns
  */
-const getUsers = () => {
+const getUsers = (isInternal) => {
   return new Promise((resolve, reject) => {
     const db = connectDB();
-    return db.all(
-      "SELECT userId AS _id, username FROM users",
-      [],
-      (err, row) => {
-        if (err) {
-          console.log("DB Error: Query failed: ", err.message);
-          return reject(err.message);
-        }
-        console.log("Users has found into the users table.");
-        db.close();
-
-        return resolve(row);
+    return db.all("SELECT userId, username FROM users", [], (err, rows) => {
+      if (err) {
+        console.log("DB Error: Query failed: ", err.message);
+        return reject(err.message);
       }
-    );
+      console.log("Users has found into the users table.");
+      db.close();
+
+      if (isInternal === true) {
+        return resolve(rows);
+      }
+
+      return resolve(
+        rows.map((row) => ({
+          _id: row.userId,
+          username: row.username,
+        }))
+      );
+    });
   });
 };
 
@@ -113,7 +118,7 @@ const insertNewExercise = (userId, exerciseData) => {
         db.close();
 
         (async () => {
-          const users = await getUsers();
+          const users = await getUsers(true);
           const userData = users.find((user) => user.userId === userId);
 
           return resolve({
@@ -149,7 +154,7 @@ const getLogs = (userId) => {
         db.close();
 
         (async () => {
-          const users = await getUsers();
+          const users = await getUsers(true);
           const userData = users.find((user) => user.userId === userId);
 
           return resolve({
