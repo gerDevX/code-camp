@@ -1,5 +1,5 @@
 {
-  "name": "url-shortener-microservice",
+  "name": "exercise-tracker-microservice",
   "version": "0.0.1",
   "description": "Backend Challenge",
   "main": "index.js",
@@ -19,9 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/freeCodeCamp/boilerplate-project-urlshortener.git"
+    "url": "https://github.com/freeCodeCamp/boilerplate-project-exercisetracker.git"
   },
-  "homepage": "https://github.com/freeCodeCamp/boilerplate-project-urlshortener#readme",
+  "homepage": "https://github.com/freeCodeCamp/boilerplate-project-exercisetracker#readme",
   "author": "GerSC",
   "keywords": [
     "node",

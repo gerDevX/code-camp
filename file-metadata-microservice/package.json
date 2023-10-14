@@ -1,0 +1,26 @@
+{
+  "name": "file-metadata-microservice",
+  "version": "0.0.1",
+  "description": "Backend Challenge",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.0",
+    "express": "^4.12.4",
+    "multer": "^1.4.5-lts.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/freeCodeCamp/boilerplate-project-filemetadata.git"
+  },
+  "homepage": "https://github.com/freeCodeCamp/boilerplate-project-filemetadata#readme",
+  "author": "GerSC",
+  "keywords": [
+    "node",
+    "express",
+    "freeCodeCamp"
+  ],
+  "license": "MIT"
+}
