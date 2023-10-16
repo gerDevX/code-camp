@@ -4,11 +4,12 @@ exports.postReply = async (req, res, next) => {
   try {
     let board = req.params.board;
     let foundBoard = await Message.findById(req.body.thread_id);
-    foundBoard.bumpes_on = new Date().toUTCString();
+    const sameDate = new Date().toUTCString();
+    foundBoard.bumpes_on = sameDate;
     let allReplies = [...foundBoard.replies];
     foundBoard.replies.push({
       text: req.body.text,
-      created_on: new Date().toUTCString(),
+      created_on: sameDate,
       delete_password: req.body.delete_password,
       reported: false,
     });
