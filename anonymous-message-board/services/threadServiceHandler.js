@@ -32,6 +32,8 @@ exports.getThread = async (req, res) => {
       .exec((err, threadArray) => {
         if (!err && threadArray) {
           threadArray.forEach((ele) => {
+            ele.delete_password = undefined;
+            ele.reported = undefined;
             ele.replycount = ele.replies.length;
 
             ele.replies.sort((a, b) => {
