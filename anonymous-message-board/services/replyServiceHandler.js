@@ -30,14 +30,14 @@ exports.getReply = async (req, res) => {
     let board = req.params.board;
     const thread = await Message.findById(req.query.thread_id);
     if (thread) {
-      // thread.delete_password = undefined;
-      // thread.reported = undefined;
+      thread.delete_password = undefined;
+      thread.reported = undefined;
       thread.replycount = thread.replies.length;
 
-      // thread.replies.forEach((reply) => {
-      //   reply.delete_password = undefined;
-      //   reply.reported = undefined;
-      // });
+      thread.replies.forEach((reply) => {
+        reply.delete_password = undefined;
+        reply.reported = undefined;
+      });
 
       return res.json(thread);
     }
