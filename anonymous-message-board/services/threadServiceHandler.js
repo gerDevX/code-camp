@@ -39,7 +39,7 @@ exports.getThread = async (req, res) => {
             });
 
             //limit replies to 3
-            ele.replies = ele.replies.slice(0, 3);
+            //ele.replies = ele.replies.slice(0, 3);
 
             /*ele.replies.forEach(reply => {
               reply.delete_password = undefined;

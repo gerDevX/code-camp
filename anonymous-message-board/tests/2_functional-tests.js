@@ -43,6 +43,7 @@ suite('Functional Tests', function () {
         .request(server)
         .get('/api/threads/test4')
         .end((err, res) => {
+          //console.log(res.body);
           assert.equal(res.status, 200);
           assert.isBelow(res.body.length, 11);
           assert.isBelow(res.body[0].replies.length, 4);

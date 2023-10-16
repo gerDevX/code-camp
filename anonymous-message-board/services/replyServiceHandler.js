@@ -14,7 +14,7 @@ exports.postReply = async (req, res, next) => {
     });
 
     await foundBoard.save();
-    return res.redirect('/b/' + board + '/' + req.body.thread_id);
+    return res.redirect('/b/' + board + '/' + foundBoard._id);
 
     // if (foundBoard) {
     //   res.json(foundBoard);
