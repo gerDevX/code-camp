@@ -27,20 +27,21 @@ exports.postReply = async (req, res, next) => {
 exports.getReply = async (req, res) => {
   try {
     let board = req.params.board;
-    await Message.findById(req.query.thread_id, async (err, thread) => {
-      if (!err && thread) {
-        thread.delete_password = undefined;
-        thread.reported = undefined;
-        thread.replycount = thread.replies.length;
+    const thread = await Message.findById(req.query.thread_id);
+    if (thread) {
+      thread.delete_password = undefined;
+      thread.reported = undefined;
+      thread.replycount = thread.replies.length;
 
-        thread.replies.forEach((reply) => {
-          reply.delete_password = undefined;
-          reply.reported = undefined;
-        });
+      thread.replies.forEach((reply) => {
+        reply.delete_password = undefined;
+        reply.reported = undefined;
+      });
 
-        return res.json(thread);
-      }
-    });
+      return res.json(thread);
+    }
+
+    res.json('error');
   } catch (err) {
     res.json('error');
   }
