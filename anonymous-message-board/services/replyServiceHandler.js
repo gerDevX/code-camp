@@ -56,7 +56,7 @@ exports.deleteReply = async (req, res) => {
         ele._id == req.body.reply_id &&
         ele.delete_password == req.body.delete_password
       ) {
-        ele.text = '[deleted]';
+        ele.text = 'delete_me';
         await foundThread.save();
         return res.send('success');
       } else if (
