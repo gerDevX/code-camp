@@ -8,8 +8,8 @@ module.exports = function (app) {
     if (!newThread.board || newThread.board === '') {
       newThread.board = request.params.board;
     }
-    newThread.createdon_ = new Date().toUTCString();
-    newThread.bumpedon_ = new Date().toUTCString();
+    newThread.created_on = new Date().toUTCString();
+    newThread.bumped_on = new Date().toUTCString();
     newThread.reported = false;
     (async () => {
       const result = await Thread.create(newThread);
@@ -24,13 +24,14 @@ module.exports = function (app) {
       text: request.body.text,
       delete_password: request.body.delete_password,
     });
-    newReply.createdon_ = new Date().toUTCString();
+    newReply.created_on = new Date().toUTCString();
+    newThread.bumped_on = new Date().toUTCString();
     newReply.reported = false;
 
     (async () => {
       const result = await Thread.findByIdAndUpdate(
         request.body.thread_id,
-        { $push: { replies: newReply }, bumpedon_: new Date().toUTCString() },
+        { $push: { replies: newReply }, bumped_on: new Date().toUTCString() },
         { new: true },
       );
       if (result) {
@@ -48,32 +49,41 @@ module.exports = function (app) {
 
   app.get('/api/threads/:board', (request, response) => {
     (async () => {
-      const resultArray = await Thread.find({ board: request.params.board })
-        .sort({ bumpedon_: 'desc' })
-        .limit(10)
-        .select('-delete_password')
-        .lean();
-
-      if (resultArray) {
-        resultArray.forEach((thread) => {
-          thread['replycount'] = thread.replies.length;
-
-          /* Sort Replies by Date */
-          thread.replies.sort((thread1, thread2) => {
-            return thread2.createdon_ - thread1.createdon_;
-          });
-
-          /* Limit Replies to 3 */
-          thread.replies = thread.replies.slice(0, 3);
-
-          /* Remove Delete Pass from Replies */
-          thread.replies.forEach((reply) => {
-            reply.delete_password = undefined;
-            reply.reported = undefined;
-          });
+      try {
+        const resultArray = await Thread.findOne({
+          board: request.params.board,
         });
+        console.log(request.params.board, resultArray);
 
-        return response.json(resultArray);
+        if (resultArray) {
+          const resultFinal = resultArray.map((thread) => {
+            thread['replycount'] = thread.replies.length;
+
+            /* Sort Replies by Date */
+            thread.replies.sort((thread1, thread2) => {
+              return thread2.created_on - thread1.created_on;
+            });
+
+            /* Limit Replies to 3 */
+            thread.replies = thread.replies.slice(0, 3);
+
+            /* Remove Delete Pass from Replies */
+            thread.replies.forEach((reply) => {
+              reply.delete_password = undefined;
+              reply.reported = undefined;
+            });
+
+            return thread;
+          });
+          console.log(resultFinal);
+          return response.json(resultFinal);
+        } else {
+          console.log('No board with this name');
+          response.json({ error: 'No board with this name' });
+        }
+      } catch (error) {
+        console.log(error);
+        response.json({ error: 'No board with this name' });
       }
     })();
   });
@@ -87,7 +97,7 @@ module.exports = function (app) {
 
         /* Sort Replies by Date */
         result.replies.sort((thread1, thread2) => {
-          return thread2.createdon_ - thread1.createdon_;
+          return thread2.created_on - thread1.created_on;
         });
 
         /* Remove Delete Pass from Replies */
