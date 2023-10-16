@@ -1,9 +1,7 @@
 'use strict';
-// const mongoose = require('mongoose');
-// const IssueModel = require('../models').Issue;
-// const ProjectModel = require('../models').Project;
+const Issues = require('./../models').Issues;
 
-module.exports = function (app, Issues) {
+module.exports = function (app) {
   app
     .route('/api/issues/:project')
 
@@ -22,12 +20,6 @@ module.exports = function (app, Issues) {
 
         res.json(result);
       })();
-      // Issues.find(filter, (err, result) => {
-      //   if (err) {
-      //     return res.json(err);
-      //   }
-      //   res.json(result);
-      // });
     })
 
     .post(function (req, res) {
@@ -85,7 +77,7 @@ module.exports = function (app, Issues) {
 
     .delete(function (req, res) {
       let project = req.params.project;
-      const _id = req.body._id;
+      const { _id } = req.body;
       if (!_id) {
         return res.json({ error: 'missing _id' });
       }
@@ -97,11 +89,11 @@ module.exports = function (app, Issues) {
         try {
           const resultData = await Issues.findByIdAndDelete(_id);
           if (!resultData) {
-            res.json({ error: 'could not delete', _id: _id });
+            return res.json({ error: 'could not delete', _id: _id });
           }
-          res.json({ result: 'successfully deleted', _id: _id });
+          return res.json({ result: 'successfully deleted', _id: _id });
         } catch (error) {
-          res.json({ error: 'could not delete', _id: _id });
+          return res.json({ error: 'could not delete', _id: _id });
         }
       })();
     });
