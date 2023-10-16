@@ -35,7 +35,6 @@ exports.getReply = async (req, res) => {
       thread.replycount = thread.replies.length;
 
       thread.replies.forEach((reply) => {
-        reply.text = 'delete_me';
         reply.delete_password = undefined;
         reply.reported = undefined;
       });
