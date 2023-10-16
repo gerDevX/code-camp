@@ -2,10 +2,8 @@ const Message = require('../models/message').Message;
 
 exports.postThread = async (req, res, next) => {
   try {
-    let board = req.params.board;
-
     let newThread = await Message.create({
-      board: board,
+      board: req.params.board,
       text: req.body.text,
       created_on: new Date(),
       bumped_on: new Date(),
@@ -14,7 +12,11 @@ exports.postThread = async (req, res, next) => {
       replies: [],
     });
 
-    return res.redirect('/b/' + board);
+    // if (newThread) {
+    //   res.json(newThread);
+    // }
+
+    return res.redirect('/b/' + req.params.board);
   } catch (err) {
     return res.json('error');
   }
@@ -72,7 +74,7 @@ exports.putThread = async (req, res) => {
     let updateThread = await Message.findById(req.body.thread_id);
     updateThread.reported = true;
     await updateThread.save();
-    return res.send('success');
+    return res.send('reported');
   } catch (err) {
     res.json('error');
   }

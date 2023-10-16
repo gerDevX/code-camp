@@ -15,6 +15,10 @@ exports.postReply = async (req, res, next) => {
 
     await foundBoard.save();
     return res.redirect('/b/' + board + '/' + req.body.thread_id);
+
+    // if (foundBoard) {
+    //   res.json(foundBoard);
+    // }
   } catch (err) {
     res.json('error');
   }
@@ -72,7 +76,7 @@ exports.putReply = async (req, res) => {
       if (ele._id == req.body.reply_id) {
         ele.reported = true;
         foundThread.save();
-        return res.send('success');
+        return res.send('reported');
       }
     });
   } catch (err) {
