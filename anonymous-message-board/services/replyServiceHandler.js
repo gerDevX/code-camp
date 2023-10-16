@@ -5,7 +5,7 @@ exports.postReply = async (req, res, next) => {
     let board = req.params.board;
     let foundBoard = await Message.findById(req.body.thread_id);
     const sameDate = new Date().toUTCString();
-    foundBoard.bumpes_on = sameDate;
+    foundBoard.bumped_on = sameDate;
     let allReplies = [...foundBoard.replies];
     foundBoard.replies.push({
       text: req.body.text,
