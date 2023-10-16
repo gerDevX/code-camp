@@ -35,6 +35,7 @@ exports.getReply = async (req, res) => {
       thread.replycount = thread.replies.length;
 
       thread.replies.forEach((reply) => {
+        reply.text = 'delete_me';
         reply.delete_password = undefined;
         reply.reported = undefined;
       });
@@ -56,7 +57,7 @@ exports.deleteReply = async (req, res) => {
         ele._id == req.body.reply_id &&
         ele.delete_password == req.body.delete_password
       ) {
-        ele.text = 'delete_me';
+        ele.text = '[deleted]';
         await foundThread.save();
         return res.send('success');
       } else if (
